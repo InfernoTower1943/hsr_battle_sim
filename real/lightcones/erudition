@@ -1,0 +1,16 @@
+from base_logic.equippables import *
+
+passkey = Lightcone(
+    description =
+    """
+    After the wearer uses their Skill, additionally regenerates 8/9/10/11/12 Energy. This effect cannot be repeatedly triggered in a single turn.
+    """,
+    name="Passkey",
+    rarity=3,
+    stats={
+        "hp": 740,
+        "atk": 370,
+        "def": 264
+    },
+    abilities = None # TODO: Implement
+)

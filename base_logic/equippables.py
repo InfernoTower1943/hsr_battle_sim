@@ -38,11 +38,14 @@ class Lightcone:
     base_atk: float = 100
     base_def: float = 50
     abilities = []
-    def __init__(self, name, description, rarity, stats):
-        self.name = name
-        self.description = description
+    enabled = False # Enable only if the wearer matches the path
+
+    def __init__(self, name, rarity, stats, abilities=None, description="No Description"):
+        self.name = NameError
         self.rarity = rarity
         self.stats = stats
+        self.abilities = abilities if abilities else []
+        self.description = description
 
     def __repr__(self):
-        return f"Lightcone(name={self.name}, description={self.description}, rarity={self.rarity}, stats={self.stats})"
+        return f"Lightcone(name={self.name}, rarity={self.rarity}, stats={self.stats}, abilities={self.abilities}, description={self.description})"
