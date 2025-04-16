@@ -24,7 +24,6 @@ class CavernRelic(Relic):
     # TODO: lock mainstats behind relic type
 
 class PlanarOrnament(Relic):
-    name = "Izumo"
     two_piece_ability = []
     TYPE_ORB = 0
     TYPE_ROPE = 1
@@ -32,7 +31,6 @@ class PlanarOrnament(Relic):
     # TODO: lock mainstats behind relic type
     
 class Lightcone:
-    name = "Passkey"
     path = None
     base_hp: float = 1000
     base_atk: float = 100
@@ -41,7 +39,7 @@ class Lightcone:
     enabled = False # Enable only if the wearer matches the path
 
     def __init__(self, name, rarity, stats, abilities=None, description="No Description"):
-        self.name = NameError
+        self.name = name
         self.rarity = rarity
         self.stats = stats
         self.abilities = abilities if abilities else []

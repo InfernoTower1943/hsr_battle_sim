@@ -33,6 +33,9 @@ class Enemy(Entity):
     resistances = []
     in_state = False
     attacks = []
+
+    def get_abilities(self):
+        return self.attacks
     
 class Ally(Entity):
     name: str = "Allied Entity"
@@ -53,12 +56,20 @@ class Character(Ally):
     max_energy: float = 160
     current_energy: float = 0
     lightcone: Lightcone = None
+    eidolon_level = 0
+    star_level = 5
 
-    def __init__(self, name, stats, crit_rate=0.05, crit_dmg=0.50):
+    def __init__(self, name, stats, crit_rate=0.05, crit_dmg=0.50, star_level=5):
         super().__init__(name, stats, crit_rate, crit_dmg)
         self.base_hp = self.stats.get("hp", -1)
         self.base_atk = self.stats.get("atk", -1)
         self.base_def = self.stats.get("def", -1)
+        
+        self.star_level = star_level
+        if star_level == 4:
+            self.eidolon_level = 0
+        else:
+            self.eidolon_level = 6
 
         # Real base stats (including lightcone)
         self.stats_screen_base_hp = self.base_hp
@@ -78,7 +89,7 @@ class Character(Ally):
         self.eidolons = [None, None, None, None, None, None]
         self.stat_traces = {}
     
-    def setLightcone(self, lightcone):
+    def set_lightcone(self, lightcone):
         self.lightcone = lightcone
         self.stats_screen_base_hp = self.base_hp + lightcone.base_hp
         self.stats_screen_base_atk = self.base_atk + lightcone.base_atk
@@ -89,6 +100,11 @@ class Character(Ally):
             self.lightcone.enabled = True
         else:
             self.lightcone.enabled = False
+
+    def get_abilities(self):
+        active_abilities = [ability for ability in [self.basic_attack, self.skill, self.ultimate, self.talent, self.memosprite_skill, self.memosprite_talent, self.ascension2, self.ascension4, self.ascension6] if ability is not None]
+        active_abilities.extend([ability for ability in self.eidolons[:self.eidolon_level] if ability is not None])
+        return active_abilities
 
 class Summon(Ally):
     name = "Summon"

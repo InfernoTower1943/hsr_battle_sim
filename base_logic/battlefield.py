@@ -1,5 +1,5 @@
 from base_logic.entities import *
-from base_logic.equippables import *
+from base_logic.equippables import Entity, Enemy, Ally, Character, Summon
 from base_logic.events import *
 from base_logic.status_effects import *
 
@@ -9,6 +9,7 @@ class Battlefield:
     turbulence = StatusEffect()
     current_cycle = 0
     action_bar = ActionBar()
+    active_abilities = tuple()
 
     def __init__(self, enemies=None, allies=None, turbulence=None, action_bar=None):
         if enemies is not None:
@@ -30,3 +31,28 @@ class Battlefield:
         self.current_cycle = 0
         self.action_bar = ActionBar()
 
+    def _update_entities(self):
+        # TODO: Triggers when summon spawns/despawns, or character dies, or enemy dies/spawns
+        # Will include updating the enemy and ally pools, and the action bar (AV).
+        self._update_abilities()
+
+    def _update_abilities(self):
+        # TODO: Triggers when the ability pool is updated.
+        active_abilities = []
+        for ally in self.allies:
+            current_ally_abilities = ally.get_abilities()
+            active_abilities.extend(current_ally_abilities)
+        for enemy in self.enemies:
+            current_enemy_abilities = enemy.get_abilities()
+            active_abilities.extend(current_enemy_abilities)
+        self.active_abilities = tuple(active_abilities)
+
+    def add_entity(self, entity):
+        if isinstance(entity, Enemy):
+            self.enemies.append(entity)
+        elif isinstance(entity, Ally):
+            self.allies.append(entity)
+        else:
+            raise ValueError("Entity must be an instance of Enemy or Ally.")
+        self._update_entities()
+        self._update_abilities()
